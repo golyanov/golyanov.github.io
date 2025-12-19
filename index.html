@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цирковой сайт</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Анимированные клоуны на фоне */
+        .clown-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .flying-clown {
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.7;
+            animation: flyAround 20s linear infinite;
+        }
+
+        .clown1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .clown2 { top: 30%; right: 10%; animation-delay: -5s; animation-duration: 25s; }
+        .clown3 { bottom: 20%; left: 15%; animation-delay: -10s; animation-duration: 30s; }
+        .clown4 { top: 60%; right: 20%; animation-delay: -15s; }
+        .clown5 { bottom: 40%; left: 80%; animation-delay: -8s; animation-duration: 22s; }
+
+        @keyframes flyAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100vw, 50vh) rotate(90deg);
+            }
+            50% {
+                transform: translate(50vw, 100vh) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50vw, 70vh) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* Конфетти */
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: #f0f;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(231, 76, 60, 0.9);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            border: 5px solid #f1c40f;
+        }
+
+        h1 {
+            font-size: 4em;
+            text-shadow: 3px 3px 0 #f1c40f, 6px 6px 0 rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #f1c40f;
+            font-style: italic;
+        }
+
+        /* Блоки для вашего контента */
+        .content-block {
+            background: rgba(52, 152, 219, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 3px dashed #f1c40f;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .content-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+        }
+
+        .content-block::before {
+            content: 'ОПИСАНИЕ УРОДЦА';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            border: 2px solid #f1c40f;
+        }
+
+        h2 {
+            color: #f1c40f;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f1c40f;
+            padding-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .user-content {
+            min-height: 200px;
+            font-size: 1.2em;
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c3e50;
+            border-radius: 10px;
+            border: 2px solid #f1c40f;
+        }
+
+        /* Специальные стили для разных блоков */
+        .block1 { background: rgba(155, 89, 182, 0.9); }
+        .block2 { background: rgba(46, 204, 113, 0.9); }
+        .block3 { background: rgba(230, 126, 34, 0.9); }
+        .block4 { background: rgba(241, 196, 15, 0.9); color: #2c3e50; }
+        
+        .block4 h2 { color: #e74c3c; border-color: #e74c3c; }
+
+        /* Галерея */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 3px solid #f1c40f;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
+        }
+
+        .gallery-item img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 2px solid #3498db;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(44, 62, 80, 0.9);
+            border-radius: 15px;
+            margin-top: 50px;
+            border-top: 5px solid #f1c40f;
+        }
+
+        /* Анимация мигания для привлечения внимания */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .edit-notice {
+            animation: blink 2s infinite;
+            color: #f1c40f;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; }
+            .content-block { padding: 20px; }
+            h2 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированные клоуны на фоне -->
+    <div class="clown-bg">
+        <div class="flying-clown clown1">🤡</div>
+        <div class="flying-clown clown2">🎪</div>
+        <div class="flying-clown clown3">🤹</div>
+        <div class="flying-clown clown4">🎭</div>
+        <div class="flying-clown clown5">🃏</div>
+    </div>
+
+    <!-- Конфетти -->
+    <div id="confetti-container"></div>
+
+    <div class="container">
+        <header>
+            <h1>Долбаеб недели</h1>
+            <p class="subtitle">Данный сайт создан для публикации долбаебов на неделю, каждую неделю персонаж меняется</p>
+        </header>
+
+        <div class="edit-notice">
+            ⚡ ЗДЕСЬ ВЫ МОЖЕТЕ С КАЙФОМ ПОСТЕБАТЬСЯ И ПОСМЕЯТЬСЯ СО СВИНЕЙ И ОТБРОСОВ ОБЩЕСТВЕННОСТИ ⚡
+        </div>
+
+        <!-- Блок 1 -->
+        <section class="content-block block1">
+            <h2>📝 Голянов - грязный хуеглот</h2>
+            <div class="user-content">
+                <!-- ВАШ ТЕКСТ ЗДЕСЬ -->
+                <p>Голянов — это ебаное отродье. Конкретный свинопанк-говножуй. От него нахуй воняет потом как от дальнобойной лошади, перегаром дешёвой бормотухи и этой его пиздатой химией для волос. Весь такой липкий и засаленный, смотреть блять тошно.
+
+Одевается блять как конченный бомж. Хуй пойми, где он этот свой ебучий плащ-дерьмомёт откопал. Носит его сука уже сто лет, не снимает наверное, даже когда ебётся. Выглядит, будто в этой тряпке щенков топил и шашлык жарил.
+
+И ещё этот кретин блять считает себя музыкантом. Берёт в свои кривые лапы гитару и начинает долбить такую хуйню, что уши блять сворачиваются в трубочку. Играет полную сука парашу, а сам такой с важным видом, будто Бах хуев. И тащится со своей такой же ебальной компашкой уродов-неудачников. Тусят блять стаей как шакалы на помойке, бухают свою дрянь и мнят себя не пойми кем. Куча блять говна, а не люди.</p>
+            </div>
+        </section>
+
+        <!-- Блок 2 -->
+        <section class="content-block block2">
+            <h2>🎯 Доказал, что уебище</h2>
+            <div class="user-content">
+                <!-- ВАШ ТЕКСТ ЗДЕСЬ -->
+                <p>Однажды, случилась у Голянова пиздатая история. Посрался он там с какой-то девкой и послал ее нахуй. Ну, были у них разборки.
+
+А чтобы из этого говна вылезти и не получить по ебалу, этот гандон Голянов придумал гнилую хуйню. Он пошёл и поставил на колени своего же двоюродного брата, Удовика. Заставил того сука извиняться перед этой девкой вместо себя, чтобы ему ее парень по ебалу не зарядил.
+
+Вот так вот. Сам насрал, а расхлёбывать заставил своего же кровного, унизив его до полного пиздеца. Всё, конец истории.</p>
+                <ul>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Блок 3 -->
+        <section class="content-block block3">
+            <h2>🖼️ Галерея свинки</h2>
+            <div class="user-content">
+                <p>Здесь вы можете детально рассмотреть изображение говножуя:</p>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <!-- ВАШЕ ИЗОБРАЖЕНИЕ ЗДЕСЬ -->
+                        <img src="images/photo11.jpg" alt="Голянов хуйня">
+                        <p>Тут он терпит и воняет на всю лестницу, пока его не впустили в коридор</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 4 -->
+        <section class="content-block block4">
+            <h2>📌 Заключение</h2>
+            <div class="user-content">
+                <!-- ВАШ ТЕКСТ ЗДЕСЬ -->
+                <p>Итак, что мы имеем в сухом остатке? А имеем мы законченного уёбка по фамилии Голянов. Это не просто свинопанк-алкаш в вонючем плаще, который играет на гитаре парашу. Это — тварь.
+
+Он показал свою истинную, гнилую суть не где-то, а на своей же крови. Вместо того чтобы отвечать за свой же ебучий конфликт из-за какой-то девки, он, как последняя шавка, подставил и унизил своего же брата Удовика. Поставил родного человека на колени и заставил извиняться за свою же трусость и пиздабольство.
+
+Значит, вся его понтовая, уродливая внешность — это просто пизда, прикрывающая пустоту и гниль внутри. Он готов слить и унизить кого угодно, даже семью, лишь бы его никчемная жопка осталась цела.
+
+Короче, моральный урод и мразь. И на этом всё.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>🎪 Создано с цирковым настроением 🎪</p>
+            <p>Вы можете свободно редактировать этот сайт</p>
+        </footer>
+    </div>
+
+    <script>
+        // Создаем конфетти
+        function createConfetti() {
+            const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+            const container = document.getElementById('confetti-container');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.width = Math.random() * 20 + 10 + 'px';
+                confetti.style.height = confetti.style.width;
+                container.appendChild(confetti);
+            }
+        }
+
+        // Анимация при наведении на блоки
+        document.querySelectorAll('.content-block').forEach(block => {
+            block.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            block.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            createConfetti();
+            
+            // Мерцание заголовков
+            setInterval(() => {
+                document.querySelectorAll('h2').forEach(h2 => {
+                    h2.style.textShadow = `2px 2px 0 rgba(${Math.random()*255},${Math.random()*255},${Math.random()*255},0.3)`;
+                });
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
